@@ -23,6 +23,13 @@ namespace DigitalCampusMap.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult SubmitContactForm()
+        {
+
+            return Content("Good");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
