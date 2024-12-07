@@ -32,13 +32,26 @@ namespace DigitalCampusMap.Controllers
                     CreatedAt = DateTime.Now 
                 };
 
-                _context.Contactforms.Add(contact);
-                _context.SaveChanges();  
 
-                return Content("Contact form submitted successfully!");
+                try
+                {
+                    _context.Contactforms.Add(contact);
+                    _context.SaveChanges();
+
+                    return Content("<div style='text-align: center; margin-top: 50px;'>" +
+                           "<h2>Your inquiry was submitted successfully and will be reviewed as soon as we can.</h2>" +
+                           "</div>", "text/html");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error while submitting contact form.");
+
+                    return Content("<div style='text-align: center; margin-top: 50px; color: red;'>" +
+                           "<h2>Something went wrong while submitting. Please try again later.</h2>" +
+                           "</div>", "text/html");
+                }
             }
-
-            return View(model);
+            return Content("Good");
         }
 
 
