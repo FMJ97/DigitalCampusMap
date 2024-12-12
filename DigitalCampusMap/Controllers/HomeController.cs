@@ -77,8 +77,8 @@ namespace DigitalCampusMap.Controllers
             
             var senderEmail = "fjukic@algebra.hr";
             var recipientEmail = model.Email;
-            var subject = "Submit form confirmation"; // subject
-            var bodyHtml = $"<p>Form submission - Issue number:{2}</p>"; //actual msg
+            var subject = $"Submit form confirmation - Track number:{5}"; // subject
+            var bodyHtml = $"<p>Subject: {model.Subject}, issue description: {model.Description}</p>"; //actual msg
             var bodyText = "Your form has been successfully submited!";
 
             
