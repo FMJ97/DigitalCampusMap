@@ -2,6 +2,7 @@ using DigitalCampusMap.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.Text;
 
@@ -26,10 +27,13 @@ namespace DigitalCampusMap.Controllers
         {
             if (ModelState.IsValid)
             {
+                Random random = new Random();
+                int randomNumber = random.Next(1, 10001);
+
                 var contact = new Contactform
                 {
                     Email = model.Email,
-                    Subject = model.Subject,
+                    Subject = model.Subject + $"-{randomNumber}",
                     Description = model.Description,
                     CreatedAt = DateTime.Now 
                 };
@@ -40,7 +44,9 @@ namespace DigitalCampusMap.Controllers
                     _context.Contactforms.Add(contact);
                     _context.SaveChanges();
 
-                    PrepareAndSendMail(model);
+                    
+
+                    PrepareAndSendMail(model, randomNumber);
 
                     return Content("<div style='text-align: center; margin-top: 50px;'>" +
                            "<h2>Your inquiry was submitted successfully and will be reviewed as soon as we can.</h2>" +
@@ -69,15 +75,16 @@ namespace DigitalCampusMap.Controllers
 
 
 
-        public void PrepareAndSendMail(Contactform model)
+        public void PrepareAndSendMail(Contactform model, int trackNum)
         {
             var apiId = "";
             var apiSecret = "";
 
             
+
             var senderEmail = "fjukic@algebra.hr";
             var recipientEmail = model.Email;
-            var subject = $"Submit form confirmation - Track number:{5}"; // subject
+            var subject = $"Submit form confirmation - Track number:{trackNum}"; // subject
             var bodyHtml = $"<p>Subject: {model.Subject}, issue description: {model.Description}</p>"; //actual msg
             var bodyText = "Your form has been successfully submited!";
 
