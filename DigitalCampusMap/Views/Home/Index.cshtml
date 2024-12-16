@@ -16,9 +16,20 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
+                @* <div class="form-group mb-3">
                     <label asp-for="Subject" class="form-label">Subject</label>
                     <input asp-for="Subject" class="form-control" placeholder="Enter subject" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div> *@
+
+                <div class="form-group mb-3">
+                    <label asp-for="Subject" class="form-label">Subject</label>
+                    <select asp-for="Subject" class="form-control">
+                        <option value="">Select subject</option>
+                        <option value="Tehnički">Tehnički</option>
+                        <option value="Upitnik">Upitnik</option>
+                        <option value="Drugo">Drugo</option>
+                    </select>
                     <span asp-validation-for="Subject" class="text-danger"></span>
                 </div>
 

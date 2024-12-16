@@ -1,4 +1,4 @@
-using DigitalCampusMap.Models;
+﻿using DigitalCampusMap.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -25,6 +25,9 @@ namespace DigitalCampusMap.Controllers
         [HttpPost]
         public IActionResult SubmitContactForm(Contactform model)
         {
+
+
+
             if (ModelState.IsValid)
             {
                 Random random = new Random();
@@ -38,6 +41,16 @@ namespace DigitalCampusMap.Controllers
                     CreatedAt = DateTime.Now 
                 };
 
+                var responseTimeMap = new Dictionary<string, string>
+                {
+                    { "Tehnički", "Under 24h" },
+                    { "Upitnik", "Under 48h" },
+                    { "Drugo", "Under 48h" }
+                };
+
+                string estimatedResponseTime = responseTimeMap.ContainsKey(model.Subject)
+                ? responseTimeMap[model.Subject]
+                : "Unknown";
 
                 try
                 {
@@ -46,7 +59,7 @@ namespace DigitalCampusMap.Controllers
 
                     
 
-                    PrepareAndSendMail(model, randomNumber);
+                    PrepareAndSendMail(model, randomNumber, estimatedResponseTime);
 
                     return Content("<div style='text-align: center; margin-top: 50px;'>" +
                            "<h2>Your inquiry was submitted successfully and will be reviewed as soon as we can.</h2>" +
@@ -75,7 +88,7 @@ namespace DigitalCampusMap.Controllers
 
 
 
-        public void PrepareAndSendMail(Contactform model, int trackNum)
+        public void PrepareAndSendMail(Contactform model, int trackNum, string responseTime)
         {
             var apiId = "";
             var apiSecret = "";
@@ -85,7 +98,7 @@ namespace DigitalCampusMap.Controllers
             var senderEmail = "fjukic@algebra.hr";
             var recipientEmail = model.Email;
             var subject = $"Submit form confirmation - Track number:{trackNum}"; // subject
-            var bodyHtml = $"<p>Subject: {model.Subject}, issue description: {model.Description}</p>"; //actual msg
+            var bodyHtml = $"<p>Subject: {model.Subject}, issue description: {model.Description} , estimated response time: {responseTime}</p>"; //actual msg
             var bodyText = "Your form has been successfully submited!";
 
             
